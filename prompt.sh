@@ -11,15 +11,6 @@ else
     SHELL_TYPE="bash"
 fi
 
-# Source git-prompt.sh for __git_ps1 function
-source ~/config/git-prompt.sh
-
-# Configure git prompt behavior
-export GIT_PS1_SHOWDIRTYSTATE=1        # Show * for unstaged, + for staged
-export GIT_PS1_SHOWUNTRACKEDFILES=1    # Show % for untracked files
-export GIT_PS1_SHOWSTASHSTATE=1        # Show $ for stashed changes
-export GIT_PS1_SHOWUPSTREAM="auto"     # Show < > = for upstream differences
-
 # Color definitions (works for both bash and zsh)
 if [ "$SHELL_TYPE" = "bash" ]; then
     # Bash colors (with \[ \] for proper line wrapping)
@@ -41,17 +32,20 @@ else
     COLOR_GIT_DIRTY='%F{red}'
 fi
 
-# Function to colorize git prompt based on status
+# Function to get git prompt info
 git_prompt_color() {
-    local git_status="$(__git_ps1 '%s')"
+    # Check if we're in a git repo
+    git rev-parse --is-inside-work-tree &>/dev/null || return
 
-    if [ -n "$git_status" ]; then
-        # Check if there are any indicators of dirty state
-        if [[ "$git_status" == *"*"* ]] || [[ "$git_status" == *"+"* ]] || [[ "$git_status" == *"%"* ]]; then
-            echo "${COLOR_GIT_DIRTY} (${git_status})${COLOR_RESET}"
-        else
-            echo "${COLOR_GIT_CLEAN} (${git_status})${COLOR_RESET}"
-        fi
+    # Get current branch
+    local branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null)
+    [ -z "$branch" ] && return
+
+    # Check for uncommitted changes
+    if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+        echo "${COLOR_GIT_DIRTY} (${branch})${COLOR_RESET}"
+    else
+        echo "${COLOR_GIT_CLEAN} (${branch})${COLOR_RESET}"
     fi
 }
 

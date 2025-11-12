@@ -4,9 +4,8 @@ Portable shell configuration that works across both bash and zsh environments.
 
 ## Features
 
-- **Git-aware prompt**: Shows current branch, dirty state, and upstream status
+- **Git-aware prompt**: Shows current branch and dirty state
 - **Smart aliases**: Common shortcuts for git, navigation, and tmux
-- **Git completion**: Tab completion for git commands and aliases (bash)
 - **Cross-shell compatible**: Works with both bash and zsh
 
 ## Quick Setup
@@ -23,13 +22,8 @@ That's it! All features will be automatically loaded.
 
 ### Prompt Features
 - Color-coded git status (green = clean, red = uncommitted changes)
-- Shows branch name
-- Indicators for:
-  - `*` - unstaged changes
-  - `+` - staged changes
-  - `%` - untracked files
-  - `$` - stashed changes
-  - `</>` - behind/ahead of upstream
+- Shows current branch name
+- Fast and lightweight
 
 ### Key Aliases
 - `ll` - detailed file listing
@@ -44,17 +38,12 @@ That's it! All features will be automatically loaded.
 - `init.sh` - Main entry point (source this!)
 - `.alias` - All shell aliases and functions
 - `prompt.sh` - Git-aware prompt configuration
-- `git-prompt.sh` - Official git prompt functions
-- `.git-completion.bash` - Git completion (bash only)
-- `bash_completion` - Completion for git aliases
-- `commit-template.txt` - Git commit message template
 
 ## Customization
 
 Edit these files to customize:
 - `.alias` - Add your own aliases/functions
 - `prompt.sh` - Change prompt colors and format
-- `commit-template.txt` - Modify git commit template
 
 ## Branch Support
 
