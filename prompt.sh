@@ -19,8 +19,10 @@ if [ "$SHELL_TYPE" = "bash" ]; then
     COLOR_AT='\[\033[0;92m\]'            # Bright green
     COLOR_HOST='\[\033[0;92m\]'          # Bright green
     COLOR_PATH='\[\033[1;33m\]'          # Bold yellow
-    COLOR_GIT_CLEAN='\[\033[0;32m\]'     # Green
-    COLOR_GIT_DIRTY='\[\033[0;91m\]'     # Bright red
+    # Raw colors for use in command substitution (without \[ \])
+    COLOR_GIT_CLEAN='\033[0;32m'         # Green
+    COLOR_GIT_DIRTY='\033[0;91m'         # Bright red
+    COLOR_GIT_RESET='\033[0m'
 else
     # Zsh colors (without \[ \])
     COLOR_RESET='%f'
@@ -30,6 +32,7 @@ else
     COLOR_PATH='%F{yellow}'
     COLOR_GIT_CLEAN='%F{green}'
     COLOR_GIT_DIRTY='%F{red}'
+    COLOR_GIT_RESET='%f'
 fi
 
 # Function to get git prompt info
@@ -43,9 +46,9 @@ git_prompt_color() {
 
     # Check for uncommitted changes
     if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
-        echo "${COLOR_GIT_DIRTY} (${branch})${COLOR_RESET}"
+        echo -e "${COLOR_GIT_DIRTY} (${branch})${COLOR_GIT_RESET}"
     else
-        echo "${COLOR_GIT_CLEAN} (${branch})${COLOR_RESET}"
+        echo -e "${COLOR_GIT_CLEAN} (${branch})${COLOR_GIT_RESET}"
     fi
 }
 
