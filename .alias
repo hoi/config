@@ -63,6 +63,16 @@ function t {
   fi
 }
 
+# If a command is a pure number, run "t term<number>"
+command_not_found_handle() {
+  if [[ "$1" =~ ^[0-9]+$ ]]; then
+    t "term$1"
+  else
+    echo "bash: $1: command not found" >&2
+    return 127
+  fi
+}
+
 # Extract any archive
 function extract {
   if [ -f $1 ]; then
@@ -84,3 +94,6 @@ function extract {
     echo "'$1' is not a valid file"
   fi
 }
+
+# Claude
+alias clauder='claude --dangerously-skip-permissions'
